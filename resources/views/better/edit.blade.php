@@ -57,7 +57,7 @@
     {{session()->get('info_message')}}
   </div>
   @endif
-  <h1>Edit restaurant</h1>
+  <h1>Edit better</h1>
   <div class="table">
     <form action="{{route('better.update',['better'=>$better])}}" method="post">
       <label for="name">Name:</label><br>

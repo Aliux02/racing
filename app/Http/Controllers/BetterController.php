@@ -29,21 +29,32 @@ class BetterController extends Controller
 
     public function winner()
     {
-        $horse = Horse::all()->random(1)[0];
-        $betters = Better::all()->sortByDesc('bet');
+
         $horses = Horse::all()->sortBy('name');
         //dd($betters);
+        foreach ($horses as $horse) { 
+            $horse->runs += 1;
+            $horse->coefficient = $horse->runs/$horse->wins;
+            $horse->save();
+        }
+        $horse = Horse::all()->random(1)[0];
+        $betters = Better::all()->sortByDesc('bet');
         for ($i=0; $i <count($betters) ; $i++) { 
-            if($horse->id == $betters[$i]->horse_id){$betters[$i]->bet_win=0;
+            if($horse->id == $betters[$i]->horse_id){
+                $betters[$i]->bet_win = 0;
                 $betters[$i]->bet_win = $betters[$i]->bet*$horse->coefficient;
-                
+                $horse->wins += 1;
+                $horse->save();
+
             }else{$betters[$i]->bet_win = 0;};
             
             $betters[$i]->overAll_win += $betters[$i]->bet_win;
             //$betters[$i]->bet_win =0;
+
             $betters[$i]->bet =0;
             $betters[$i]->save();
         }
+
         ///dd($betters);
         //return view('better.index',['betters'=>$betters],['horses'=> $horses])->with('horse',$horse);
         return redirect()->route('better.index')->with('horse_message','And the winner is '.$horse->name);
