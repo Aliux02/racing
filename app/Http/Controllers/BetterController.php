@@ -29,14 +29,13 @@ class BetterController extends Controller
 
     public function winner()
     {
-
         $horses = Horse::all()->sortBy('name');
-        //dd($betters);
         foreach ($horses as $horse) { 
             $horse->runs += 1;
             $horse->coefficient = $horse->runs/$horse->wins;
             $horse->save();
         }
+        
         $horse = Horse::all()->random(1)[0];
         $betters = Better::all()->sortByDesc('bet');
         for ($i=0; $i <count($betters) ; $i++) { 
