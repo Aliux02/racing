@@ -1,0 +1,112 @@
+body{
+  
+    margin: 0;
+    padding: 0;
+    vertical-align: top;
+    box-sizing: border-box;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri,'Trebuchet MS', sans-serif;
+    height: 100vh;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+  }
+  .header{
+    grid-area:header;
+    width: 100%;
+    height:50px;
+  }
+  .btn-play{
+      border-radius: 10px;
+      height: 40px;
+      width: 60px;
+  }
+  .btn-play:hover{
+    background: rgb(238,174,202);
+    background: radial-gradient(circle, rgba(238,174,202,1) 0%, rgba(148,187,233,1) 100%);
+}
+  .play{
+    text-align: center;
+  }
+  
+  table {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+  }
+  td, th {
+    opacity: 0.8;
+    background-color:#e3e3e3;
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+  }
+  tr:nth-child(even) {
+    background-color: #dddddd;
+  }
+  .alert{
+    font-size: 20px;
+    background-color: red;
+    width: 400px;
+  }
+  .alert-info{
+    font-size: 20px;
+    background-color: yellow;
+    width: 400px;
+  }
+  .alert-success{
+    font-size: 20px;
+    background-color: green;
+    width: 400px;
+  }
+  .win-success{
+    font-size: 20px;
+    width: 100%;
+  }
+  a{
+    text-decoration: none;
+  }
+  h1{
+    text-align: center;
+  }
+  .backRefresh{
+    padding: 10px;
+    float:right;
+  }
+  .filter{
+    float: right;
+  }
+  .betters{
+    grid-area:betters;
+    
+    
+    float: left;
+  }
+  .horses{
+    grid-area:horses;
+    
+    float: right;
+  }
+  .wrap{
+    display: grid;
+    grid-template-rows: auto;
+    column-gap: 50px;
+    margin-top: 125px;
+    grid-template-columns: 10px 1fr 1fr 10px;
+    grid-template-areas:  
+    "header header header header"
+    " . betters horses . "
+  }
+  @media (max-width: 1200px) {
+    .wrap {
+      grid-template-areas: 
+      " . betters betters . "
+      " . horses horses . "
+    }
+  }
+  /* @media (max-width: 700px) {
+    .wrap {
+      grid-template-areas: 
+      " . betters . . "
+      " . horses . . "
+    }
+  } */

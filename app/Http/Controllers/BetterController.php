@@ -70,7 +70,7 @@ class BetterController extends Controller
 
         ///dd($betters);
         //return view('better.index',['betters'=>$betters],['horses'=> $horses])->with('horse',$horse);
-        return redirect()->route('better.index')->with('horse_message','And the winner is '.$horse->name);
+        return redirect()->route('better.index')->with('horse_message','Laimejo zirgas vardu: '.$horse->name);
     }
 
     public function sort()
@@ -135,7 +135,7 @@ class BetterController extends Controller
             }
         $better = new Better();
         $better->name = ucfirst($request->name);
-        $better->surname = ucfirst($request->name);
+        $better->surname = ucfirst($request->surname);
         $better->bet = str_replace(',','.',$request->bet); ///jei bet tuscias??
         $better->bet_win = $request->bet_win;
         $better->overAll_win = $request->overAll_win ;
@@ -146,7 +146,7 @@ class BetterController extends Controller
             return redirect()->route('better.index')->with('no_horses_choosen_message','Arklys turi buti pasirinktas');
         }
         $better->save();
-        return redirect()->route('better.index')->with('success_message','Losejas '.$better->name.'sekmingai pridetas');
+        return redirect()->route('better.index')->with('success_message','Zaidejas '.$better->name.' sekmingai pridetas');
     }
 
     /**
@@ -214,7 +214,7 @@ class BetterController extends Controller
         $better->bet = str_replace(',','.',$request->bet);
         $better->horse_id = $request->horse_id; 
         $better->update();
-        return redirect()->route('better.index')->with('success_message','Žaidejas '.$better->name.'sekmingai pakoreguotas');
+        return redirect()->route('better.index')->with('success_message','Žaidejas '.$better->name.' sekmingai pakoreguotas');
     }
 
     /**

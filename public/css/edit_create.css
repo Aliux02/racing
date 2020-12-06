@@ -1,0 +1,42 @@
+
+body{
+    margin: 0;
+    padding: 0;
+    vertical-align: top;
+    box-sizing: border-box;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri,'Trebuchet MS', sans-serif;
+    height: 100vh;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+  }
+    a{
+        text-decoration: none;
+    }
+    .table{
+        display: flex;
+        justify-content:center;
+        margin-top: 100px;
+    }
+    form{
+        text-align: center;
+    }
+    h1{
+        text-align: center;
+        margin-top: 100px;
+    }
+    .alert{
+        font-size: 20px;
+        background-color: red;
+        width: 400px;
+    }
+    .alert-info{
+        font-size: 20px;
+        background-color: yellow;
+        width: 400px;
+    }
+    .alert-success{
+        font-size: 20px;
+        background-color: green;
+        width: 400px;
+    }

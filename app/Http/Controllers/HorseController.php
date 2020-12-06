@@ -16,8 +16,8 @@ class HorseController extends Controller
      */
     public function index()
     {
-        $horses = Horse::all()->sortBy('name');
-        return view('horse.index', ['horses'=> $horses]);
+        // $horses = Horse::all()->sortBy('name');
+        // return view('horse.index', ['horses'=> $horses]);
     }
 
     /**
