@@ -16,10 +16,10 @@ class CreateHorsesTable extends Migration
         Schema::create('horses', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->integer('runs');
-            $table->integer('wins');
+            $table->integer('runs')->nullable();
+            $table->integer('wins')->nullable();
             $table->decimal('coefficient')->nullable();
-            $table->string('about');
+            $table->string('about')->nullable();
             $table->timestamps();
         });
     }

@@ -20,7 +20,7 @@ class CreateBettersTable extends Migration
             $table->decimal('bet')->nullable();
             $table->decimal('bet_win')->nullable();
             $table->decimal('overAll_win')->nullable();
-            $table->foreignId('horse_id')->references('id')->on('horses');
+            $table->foreignId('horse_id')->references('id')->on('horses')->onDelete('cascade');
             $table->timestamps();
         });
     }

@@ -30,29 +30,43 @@ class BetterController extends Controller
     public function winner()
     {
         $horses = Horse::all()->sortBy('name');
+
+        if ($horses == '[]') {
+            return redirect()->route('better.index')->with('no_horses_message','Nera arkliu aikstyne ');
+        }
+
         foreach ($horses as $horse) { 
             $horse->runs += 1;
-            $horse->coefficient = $horse->runs/$horse->wins;
+
+            if ($horse->wins == 0) {
+                $horse->coefficient = 0;
+            }else{$horse->coefficient = $horse->runs/$horse->wins;}
+
             $horse->save();
         }
-        
+               
         $horse = Horse::all()->random(1)[0];
-        $betters = Better::all()->sortByDesc('bet');
-        for ($i=0; $i <count($betters) ; $i++) { 
-            if($horse->id == $betters[$i]->horse_id){
-                $betters[$i]->bet_win = 0;
-                $betters[$i]->bet_win = $betters[$i]->bet*$horse->coefficient;
-                $horse->wins += 1;
-                $horse->save();
 
-            }else{$betters[$i]->bet_win = 0;};
+        $horse->wins += 1;
+        $horse->coefficient = $horse->runs/$horse->wins;
+        $horse->save();
+
+        $betters = Better::all()->sortByDesc('bet');//if bet == 0?
+        for ($i=0; $i <count($betters) ; $i++) { 
+            if( $betters[$i]->horse_id == $horse->id){
+
+                $horse->coefficient = $horse->runs/$horse->wins;
+                $betters[$i]->bet_win = $betters[$i]->bet*$horse->coefficient;
+                $horse->save();
+            }else{
+                $betters[$i]->bet_win = 0;
+            };
             
             $betters[$i]->overAll_win += $betters[$i]->bet_win;
-            //$betters[$i]->bet_win =0;
-
             $betters[$i]->bet =0;
             $betters[$i]->save();
         }
+
 
         ///dd($betters);
         //return view('better.index',['betters'=>$betters],['horses'=> $horses])->with('horse',$horse);
@@ -61,11 +75,15 @@ class BetterController extends Controller
 
     public function sort()
     {
-        $horse = new Horse();
         $horses = Horse::all()->sortBy('name');
-        $betters = Better::where('horse_id','=',$_GET['horse_id'])->get();
-        return view('better.index',['horses'=> $horses],['betters'=>$betters])->with('horse',$horse);
-        
+        if($_GET['horse_id'] == 0 ){
+            $betters = Better::all();
+            return redirect()->route('better.index');
+        }
+        else{
+            $betters = Better::where('horse_id','=',$_GET['horse_id'])->get();
+            return view('better.index',['horses'=> $horses],['betters'=>$betters]);
+        }
     }
 
 
@@ -88,11 +106,13 @@ class BetterController extends Controller
      */
     public function store(Request $request)
     {
+        $request->merge(['bet'=> str_replace(',','.',$request->bet)]) ;
+        //$request->bet = str_replace(',','.',$request->bet);
         $validator = Validator::make($request->all(),
         [
             'name' => ['required','unique:betters','min:3','max:64'],
             'surname' => ['required','min:1','max:64'],
-            'bet' => ['min:1','max:4'],
+            'bet' => ['required','numeric','min:1','max:5000'],
         ],
         [
             'name.required' => 'Zaidejo vardas privalomas',
@@ -104,22 +124,27 @@ class BetterController extends Controller
             'surname.min' => 'Zaidejo pavarde per trumpa',
             'surname.max' => 'Zaidejo pavarde per ilga',
 
-            'bet.min' => 'Statymas per mazas',
+            'bet.required' => 'Statymas privalomas',
+            'bet.numeric' => 'Statymas turi buti skaicius',
+            'bet.min' => 'Statymas negali buti mazesnis nei 1 pinigas',
             'bet.max' => 'Statymas per didelis',
         ]);
             if ($validator->fails()) {
                 $request->flash();
                 return redirect()->back()->withErrors($validator);
             }
-
-
         $better = new Better();
         $better->name = ucfirst($request->name);
-        $better->surname = $request->surname;
-        $better->bet = $request->bet;
+        $better->surname = ucfirst($request->name);
+        $better->bet = str_replace(',','.',$request->bet); ///jei bet tuscias??
         $better->bet_win = $request->bet_win;
         $better->overAll_win = $request->overAll_win ;
         $better->horse_id = $request->horse_id; 
+
+        //dd($better->overAll_win);
+        if ($request->horse_id == null) {
+            return redirect()->route('better.index')->with('no_horses_choosen_message','Arklys turi buti pasirinktas');
+        }
         $better->save();
         return redirect()->route('better.index')->with('success_message','Losejas '.$better->name.'sekmingai pridetas');
     }
@@ -156,11 +181,13 @@ class BetterController extends Controller
      */
     public function update(Request $request, better $better)
     {
+        $request->merge(['bet'=> str_replace(',','.',$request->bet)]) ;
+        //$request->bet = str_replace(',','.',$request->bet);
         $validator = Validator::make($request->all(),
         [
             'name' => ['required','min:3','max:64'],
             'surname' => ['required','min:1','max:64'],
-            'bet' => ['min:1','max:100000','numeric'],
+            'bet' => ['required','numeric','min:1','max:5000'],
         ],
         [
             'name.required' => 'Zaidejo vardas privalomas',
@@ -171,6 +198,8 @@ class BetterController extends Controller
             'surname.min' => 'Zaidejo pavarde per trumpa',
             'surname.max' => 'Zaidejo pavarde per ilga',
 
+            'bet.required' => 'Statymas privalomas',
+            'bet.numeric' => 'Statymas turi buti skaicius',
             'bet.min' => 'Statymas per mazas',
             'bet.max' => 'Statymas per didelis',
         ]);
@@ -182,7 +211,7 @@ class BetterController extends Controller
         $better->id = $better->id;
         $better->name = ucfirst($request->name);
         $better->surname = $request->surname;
-        $better->bet = $request->bet;
+        $better->bet = str_replace(',','.',$request->bet);
         $better->horse_id = $request->horse_id; 
         $better->update();
         return redirect()->route('better.index')->with('success_message','Žaidejas '.$better->name.'sekmingai pakoreguotas');

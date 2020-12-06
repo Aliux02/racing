@@ -57,15 +57,21 @@
       {{session()->get('info_message')}}
     </div>
     @endif
+    @if (session()->has('no_horses_choosen_message'))
+    <div class="alert">
+      {{session()->get('no_horses_choosen_message')}}
+    </div>
+  @endif
+
     <h1>Create new better</h1>
   <div class="table">
     <form action="{{route('better.store')}}" method="post">
       <label for="name">Name:</label><br>
-      <input type="text" id="name" name="name" value=""><br><br>
+      <input type="text" id="name" name="name" value="{{old('name')}}"><br><br>
       <label for="surname">Surname:</label><br>
-      <input type="text" id="surname" name="surname" value=""><br><br>
+      <input type="text" id="surname" name="surname" value="{{old('surname')}}"><br><br>
       <label for="bet">Bet:</label><br>
-      <input type="text" id="bet" name="bet" value=""><br><br>
+      <input type="text" id="bet" name="bet" value="{{old('bet')}}"><br><br>
 
       <label for="horse">Horse:</label><br>
       <select name="horse_id" id="horse">

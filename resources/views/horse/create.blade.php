@@ -61,11 +61,11 @@
   <div class="table col-md-8">
     <form action="{{route('horse.store')}}" method="post">
       <label for="name">Name:</label><br>
-      <input type="text" id="name" name="name" value=""><br><br>
+      <input type="text" id="name" name="name" value="{{old('name')}}"><br><br>
       <label for="runs">Runs:</label><br>
-      <input type="text" id="runs" name="runs" value=""><br><br>
+      <input type="text" id="runs" name="runs" value="{{old('runs')}}"><br><br>
       <label for="wins">Wins:</label><br>
-      <input type="text" id="wins" name="wins" value=""><br><br>
+      <input type="text" id="wins" name="wins" value="{{old('wins')}}"><br><br>
 
       <label for="about">About:</label><br>
       <input type="text" id="about" name="about" value=""><br><br>

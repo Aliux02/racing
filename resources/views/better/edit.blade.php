@@ -61,11 +61,11 @@
   <div class="table">
     <form action="{{route('better.update',['better'=>$better])}}" method="post">
       <label for="name">Name:</label><br>
-      <input type="text" id="name" name="name" value="{{$better->name}}"><br>
+      <input type="text" id="name" name="name" value="{{ old('name') == null ? $better->name : old('name') }}"><br>
       <label for="surname">surname:</label><br>
-      <input type="text" id="surname" name="surname" value="{{$better->surname}}"><br><br>
+      <input type="text" id="surname" name="surname" value="{{ old('surname') == null ? $better->surname : old('surname') }}"><br><br>
       <label for="bet">bet:</label><br>
-      <input type="text" id="bet" name="bet" value="{{$better->bet}}"><br><br>
+      <input type="text" id="bet" name="bet" value="{{ old('bet') == null ? $better->bet : old('bet') }}"><br><br>
 
       <label for="horse">horse:</label><br>
       <select name="horse_id" id="horse">

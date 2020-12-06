@@ -60,11 +60,11 @@
     <div class="table">    
       <form action="{{route('horse.update',['horse'=>$horse])}}" method="post">
       <label for="name">name:</label><br>
-      <input type="text" id="name" name="name" value="{{$horse->name}}"><br>
+      <input type="text" id="name" name="name" value="{{ old('name') == null ? $horse->name : old('name') }}"><br>
       <label for="runs">	runs:</label><br>
-      <input type="text" id="runs" name="runs" value="{{$horse->runs}}"><br><br>
+      <input type="text" id="runs" name="runs" value="{{ old('runs') == null ? $horse->runs : old('runs') }}"><br><br>
       <label for="wins">wins:</label><br>
-      <input type="text" id="wins" name="wins" value="{{$horse->wins}}"><br><br>
+      <input type="text" id="wins" name="wins" value="{{ old('wins') == null ? $horse->wins : old('wins') }}"><br><br>
 
       <label for="about">About:</label><br>
       <input type="text" id="about" name="about" value="{{$horse->about}}"><br><br>
